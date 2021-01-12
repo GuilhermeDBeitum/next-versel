@@ -1,26 +1,28 @@
-import { useState } from "react";
+import React from "react";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
+import Login from "../components/Login"
 
-function Home() {
+
+function App() {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const theme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {  
+          type: prefersDarkMode ? "dark" : "light",
+        },
+      }),
+    [prefersDarkMode]
+  );
+
   return (
-    <div>
-      <h1>HOME</h1>
-      <Contador />
-    </div>
+    <ThemeProvider theme={theme}>
+         <Login />
+    </ThemeProvider>
   );
 }
 
-function Contador() {
-  let [contador, setContador] = useState(1);
-
-  function adicionarContador() {
-    setContador(contador + 1);
-  }
-  return (
-    <div>
-      <div>{contador}</div>
-      <button onClick={adicionarContador}>Adicionar</button>
-    </div>
-  );
-}
-
-export default Home;
+export default App;
